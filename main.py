@@ -48,12 +48,44 @@ def chat(user_input, hist):
             langchain_history.append(AIMessage(content=item['content']))
     response = chain.invoke({"input": user_input, "history": langchain_history})
     
+    EINSTEIN_IMG = "https://res.cloudinary.com/dps3iqjab/image/upload/v1767868637/einstein_umxhjn.png"
+    
+    assistant_html = f"""
+    <div style="display:flex; align-items:flex-start; gap:8px;">
+        <img 
+            src="{EINSTEIN_IMG}"
+            style="
+                width:32px;
+                height:32px;
+                border-radius:50%;
+                object-fit:cover;
+                border:1px solid #ddd;
+                flex-shrink:0;
+            "
+        />
+        <div style="
+            max-width:500px;
+            line-height:1.4;
+            padding:8px 12px;
+            border-radius:12px;
+        ">
+            {response}
+        </div>
+    </div>
+    """
+
+    
     hist = hist + [
         {"role": "user", "content": user_input},
-        {"role": "assistant", "content": response},
+        {"role": "assistant", 
+         "content": assistant_html
+        },
     ] 
     
     return "", hist
+
+def clear_chat():
+    return "", []
     
 page = gr.Blocks(
     title="Chat with Einstein",
@@ -69,12 +101,13 @@ with page:
     """
     )
     
-    chatbot = gr.Chatbot()
+    chatbot = gr.Chatbot(show_label=False)
     
-    msg = gr.Textbox()
+    msg = gr.Textbox(show_label=False, placeholder="Ask Einstein anything...")
     
     msg.submit(chat, [msg, chatbot], [msg, chatbot])
     
-    clear = gr.Button("Clear Chat")
+    clear = gr.Button("Clear Chat", variant="secondary")
+    clear.click(clear_chat, outputs=[msg, chatbot])
     
-page.launch(share=True)
+page.launch(share=True, allowed_paths=["."])

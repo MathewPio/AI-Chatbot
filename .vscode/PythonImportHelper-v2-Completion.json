@@ -78,7 +78,16 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def chat(user_input, hist):\n    langchain_history = []\n    for item in hist:\n        if item['role'] == 'user':\n            langchain_history.append(HumanMessage(content=item['content']))\n        elif item['role'] == 'assistant':\n            langchain_history.append(AIMessage(content=item['content']))\n    response = chain.invoke({\"input\": user_input, \"history\": langchain_history})\n    hist = hist + [\n        {\"role\": \"user\", \"content\": user_input},",
+        "peekOfCode": "def chat(user_input, hist):\n    langchain_history = []\n    for item in hist:\n        if item['role'] == 'user':\n            langchain_history.append(HumanMessage(content=item['content']))\n        elif item['role'] == 'assistant':\n            langchain_history.append(AIMessage(content=item['content']))\n    response = chain.invoke({\"input\": user_input, \"history\": langchain_history})\n    EINSTEIN_IMG = \"https://res.cloudinary.com/dps3iqjab/image/upload/v1767868637/einstein_umxhjn.png\"\n    assistant_html = f\"\"\"",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "clear_chat",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def clear_chat():\n    return \"\", []\npage = gr.Blocks(\n    title=\"Chat with Einstein\",\n    theme=gr.themes.Soft()\n)\nwith page:\n    gr.Markdown(\n    \"\"\"\n    # Chat with Einstein",
         "detail": "main",
         "documentation": {}
     },
